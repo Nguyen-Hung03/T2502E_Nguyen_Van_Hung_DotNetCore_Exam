@@ -1,0 +1,29 @@
+@model ComicBook
+@{
+    ViewData["Title"] = "Xóa truyện";
+    ViewData["PageTitle"] = "Xóa truyện tranh";
+    ViewData["PageSubtitle"] = "Hành động này không thể hoàn tác";
+}
+
+<partial name="_PageHeader" />
+
+<div class="form-shell">
+    <div class="form-card">
+        <div class="alert alert-danger alert-modern mb-4">
+            Bạn có chắc muốn xóa truyện <strong>@Model.Title</strong>?
+        </div>
+        <dl class="row mb-0">
+            <dt class="col-sm-4 text-muted">Tác giả</dt>
+            <dd class="col-sm-8">@Model.Author</dd>
+            <dt class="col-sm-4 text-muted">Giá thuê / ngày</dt>
+            <dd class="col-sm-8">@Model.PricePerDay.ToString("N0") đ</dd>
+        </dl>
+        <form asp-action="Delete" class="mt-4 pt-3 border-top">
+            <input type="hidden" asp-for="ComicBookID" />
+            <div class="d-flex flex-wrap gap-2">
+                <input type="submit" value="Xác nhận xóa" class="btn btn-soft-danger" />
+                <a asp-action="Index" class="btn btn-outline-accent">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>

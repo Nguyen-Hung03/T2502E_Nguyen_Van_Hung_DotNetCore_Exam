@@ -1,0 +1,42 @@
+@model IEnumerable<ComicBook>
+@{
+    ViewData["Title"] = "Truyện tranh";
+    ViewData["PageTitle"] = "Danh sách truyện tranh";
+    ViewData["PageSubtitle"] = $"Quản lý {Model.Count()} cuốn truyện trong hệ thống";
+    ViewData["PageActionText"] = "+ Thêm truyện mới";
+    ViewData["PageActionController"] = "ComicBooks";
+    ViewData["PageActionAction"] = "Create";
+}
+
+<partial name="_PageHeader" />
+
+@if (!Model.Any())
+{
+    <div class="panel-card empty-state">
+        <div class="empty-state-icon">📭</div>
+        <h5>Chưa có truyện nào</h5>
+        <p>Hãy thêm truyện tranh đầu tiên vào hệ thống.</p>
+        <a asp-action="Create" class="btn btn-accent mt-2">Thêm truyện</a>
+    </div>
+}
+else
+{
+    <div class="comic-grid">
+        @foreach (var item in Model)
+        {
+            <article class="comic-card">
+                <div class="comic-card-cover">📖</div>
+                <div class="comic-card-body">
+                    <h5>@item.Title</h5>
+                    <p class="author">@item.Author</p>
+                    <span class="price-badge">@item.PricePerDay.ToString("N0") đ / ngày</span>
+                    <div class="comic-card-actions">
+                        <a asp-action="Edit" asp-route-id="@item.ComicBookID" class="btn btn-soft-warning btn-sm">Sửa</a>
+                        <a asp-action="Details" asp-route-id="@item.ComicBookID" class="btn btn-soft-info btn-sm">Chi tiết</a>
+                        <a asp-action="Delete" asp-route-id="@item.ComicBookID" class="btn btn-soft-danger btn-sm">Xóa</a>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+}

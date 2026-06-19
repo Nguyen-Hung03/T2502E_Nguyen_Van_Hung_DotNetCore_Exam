@@ -1,0 +1,14 @@
+/* /Views/Shared/_Layout.cshtml.rz.scp.css */
+.btn-primary[b-7i7nzus3p7] {
+  color: #fff;
+  background: linear-gradient(135deg, #a5aaf5, #8b93f0);
+  border: none;
+}
+
+.btn-primary:hover[b-7i7nzus3p7] {
+  background: linear-gradient(135deg, #b3b7f7, #949bf2);
+}
+
+a.navbar-brand[b-7i7nzus3p7] {
+  white-space: normal;
+}

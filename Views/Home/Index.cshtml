@@ -1,0 +1,55 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<section class="hero-card">
+    <h1>comicsys.com</h1>
+    <p>Hệ thống quản lý cho thuê truyện tranh — nhanh chóng, trực quan và dễ sử dụng cho cửa hàng truyện của bạn.</p>
+</section>
+
+<div class="stat-grid">
+    <div class="stat-card accent">
+        <div class="stat-label">Truyện trong kho</div>
+        <div class="stat-value">@Model.TotalBooks</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Khách hàng</div>
+        <div class="stat-value">@Model.TotalCustomers</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Tổng lượt thuê</div>
+        <div class="stat-value">@Model.TotalRentals</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Đang thuê</div>
+        <div class="stat-value">@Model.ActiveRentals</div>
+    </div>
+</div>
+
+<div class="quick-grid">
+    <div class="quick-card">
+        <div class="quick-icon">📚</div>
+        <h5>Quản lý truyện</h5>
+        <p class="text-muted mb-3">Thêm, sửa, xóa truyện tranh trong kho.</p>
+        <a asp-controller="ComicBooks" asp-action="Index" class="btn btn-accent btn-sm">Xem truyện</a>
+    </div>
+    <div class="quick-card">
+        <div class="quick-icon">👤</div>
+        <h5>Khách hàng</h5>
+        <p class="text-muted mb-3">Đăng ký khách hàng mới lần đầu.</p>
+        <a asp-controller="Customers" asp-action="Register" class="btn btn-accent btn-sm">Đăng ký</a>
+    </div>
+    <div class="quick-card">
+        <div class="quick-icon">📝</div>
+        <h5>Thuê sách</h5>
+        <p class="text-muted mb-3">Tạo phiếu thuê truyện cho khách.</p>
+        <a asp-controller="Rentals" asp-action="Create" class="btn btn-accent btn-sm">Tạo phiếu thuê</a>
+    </div>
+    <div class="quick-card">
+        <div class="quick-icon">📊</div>
+        <h5>Báo cáo</h5>
+        <p class="text-muted mb-3">Xem danh sách thuê theo khoảng ngày.</p>
+        <a asp-controller="Reports" asp-action="Index" class="btn btn-accent btn-sm">Xem báo cáo</a>
+    </div>
+</div>

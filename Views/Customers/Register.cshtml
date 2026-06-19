@@ -1,0 +1,39 @@
+@model Customer
+@{
+    ViewData["Title"] = "Đăng ký khách hàng";
+    ViewData["PageTitle"] = "Đăng ký khách hàng mới";
+    ViewData["PageSubtitle"] = "Nhập thông tin khách hàng lần đầu sử dụng dịch vụ thuê truyện";
+}
+
+<partial name="_PageHeader" />
+
+<div class="form-shell">
+    <div class="form-card">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" placeholder="Ví dụ: Nguyễn Văn An" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Ví dụ: 0901234567" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="RegistrationDate" class="form-label"></label>
+                <input asp-for="RegistrationDate" class="form-control" type="date" />
+                <span asp-validation-for="RegistrationDate" class="text-danger"></span>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <input type="submit" value="Đăng ký khách hàng" class="btn btn-accent" />
+                <a asp-action="Index" class="btn btn-outline-accent">Xem danh sách</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

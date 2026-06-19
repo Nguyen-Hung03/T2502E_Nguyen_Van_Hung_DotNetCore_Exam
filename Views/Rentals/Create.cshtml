@@ -1,0 +1,75 @@
+@model RentalCreateViewModel
+@{
+    ViewData["Title"] = "Tạo phiếu thuê";
+    ViewData["PageTitle"] = "Tạo phiếu thuê truyện";
+    ViewData["PageSubtitle"] = "Chọn khách hàng, truyện và thời gian thuê";
+}
+
+<partial name="_PageHeader" />
+
+<div class="form-shell">
+    <div class="form-card form-card-wide">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="CustomerID" class="form-label"></label>
+                    <select asp-for="CustomerID" asp-items="Model.Customers" class="form-select">
+                        <option value="">-- Chọn khách hàng --</option>
+                    </select>
+                    <span asp-validation-for="CustomerID" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ComicBookID" class="form-label"></label>
+                    <select asp-for="ComicBookID" asp-items="Model.ComicBooks" class="form-select" id="comicBookSelect">
+                        <option value="">-- Chọn truyện --</option>
+                    </select>
+                    <span asp-validation-for="ComicBookID" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="RentalDate" class="form-label"></label>
+                    <input asp-for="RentalDate" class="form-control" type="date" />
+                    <span asp-validation-for="RentalDate" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ReturnDate" class="form-label"></label>
+                    <input asp-for="ReturnDate" class="form-control" type="date" />
+                    <span asp-validation-for="ReturnDate" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Quantity" class="form-label"></label>
+                    <input asp-for="Quantity" class="form-control" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PricePerDay" class="form-label"></label>
+                    <input asp-for="PricePerDay" class="form-control" id="pricePerDay" />
+                    <span asp-validation-for="PricePerDay" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <input type="submit" value="Tạo phiếu thuê" class="btn btn-accent" />
+                <a asp-action="Index" class="btn btn-outline-accent">Danh sách</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('comicBookSelect').addEventListener('change', async function () {
+            const comicBookId = this.value;
+            if (!comicBookId) {
+                document.getElementById('pricePerDay').value = '';
+                return;
+            }
+
+            const response = await fetch(`/Rentals/GetPricePerDay?comicBookId=${comicBookId}`);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('pricePerDay').value = data.pricePerDay;
+            }
+        });
+    </script>
+}

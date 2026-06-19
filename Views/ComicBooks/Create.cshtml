@@ -1,0 +1,39 @@
+@model ComicBook
+@{
+    ViewData["Title"] = "Thêm truyện";
+    ViewData["PageTitle"] = "Thêm truyện mới";
+    ViewData["PageSubtitle"] = "Nhập thông tin truyện tranh vào kho";
+}
+
+<partial name="_PageHeader" />
+
+<div class="form-shell">
+    <div class="form-card">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" placeholder="Nhập tên truyện" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Author" class="form-label"></label>
+                <input asp-for="Author" class="form-control" placeholder="Nhập tác giả" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="PricePerDay" class="form-label"></label>
+                <input asp-for="PricePerDay" class="form-control" placeholder="Ví dụ: 8000" />
+                <span asp-validation-for="PricePerDay" class="text-danger"></span>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <input type="submit" value="Lưu truyện" class="btn btn-accent" />
+                <a asp-action="Index" class="btn btn-outline-accent">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

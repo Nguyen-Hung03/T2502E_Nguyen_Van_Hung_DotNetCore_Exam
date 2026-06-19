@@ -1,0 +1,64 @@
+@model IEnumerable<Rental>
+@{
+    ViewData["Title"] = "Thuê sách";
+    ViewData["PageTitle"] = "Danh sách phiếu thuê";
+    ViewData["PageSubtitle"] = "Theo dõi lịch sử và trạng thái thuê truyện";
+    ViewData["PageActionText"] = "+ Tạo phiếu thuê";
+    ViewData["PageActionController"] = "Rentals";
+    ViewData["PageActionAction"] = "Create";
+}
+
+<partial name="_PageHeader" />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-modern mb-4">@TempData["SuccessMessage"]</div>
+}
+
+<div class="panel-card">
+    <div class="table-responsive">
+        <table class="table table-modern">
+            <thead>
+                <tr>
+                    <th>Khách hàng</th>
+                    <th>Ngày thuê</th>
+                    <th>Ngày trả</th>
+                    <th>Trạng thái</th>
+                    <th>Tên truyện</th>
+                    <th>Số lượng</th>
+                    <th>Giá / ngày</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rental in Model)
+                {
+                    foreach (var detail in rental.RentalDetails)
+                    {
+                        <tr>
+                            <td class="fw-bold">@rental.Customer?.FullName</td>
+                            <td>@rental.RentalDate.ToString("dd/MM/yyyy")</td>
+                            <td>@rental.ReturnDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (rental.Status == "Đang thuê")
+                                {
+                                    <span class="status-badge status-renting">@rental.Status</span>
+                                }
+                                else if (rental.Status == "Đã trả")
+                                {
+                                    <span class="status-badge status-returned">@rental.Status</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-available">@rental.Status</span>
+                                }
+                            </td>
+                            <td>@detail.ComicBook?.Title</td>
+                            <td>@detail.Quantity</td>
+                            <td>@detail.PricePerDay.ToString("N0") đ</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

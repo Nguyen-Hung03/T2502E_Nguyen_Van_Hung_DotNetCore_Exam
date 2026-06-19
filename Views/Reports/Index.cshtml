@@ -1,0 +1,70 @@
+@model ReportViewModel
+@{
+    ViewData["Title"] = "Báo cáo thuê sách";
+    ViewData["PageTitle"] = "Báo cáo thuê truyện";
+    ViewData["PageSubtitle"] = "Lọc danh sách thuê theo khoảng thời gian";
+}
+
+<partial name="_PageHeader" />
+
+<div class="panel-card filter-panel mb-4">
+    <form asp-action="Index" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="row align-items-end g-3">
+            <div class="col-md-4">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="EndDate" class="form-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <input type="submit" value="Tìm kiếm" class="btn btn-accent w-100" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@if (Model.Items.Any())
+{
+    <div class="panel-card">
+        <div class="table-responsive">
+            <table class="table table-modern">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên truyện</th>
+                        <th>Ngày thuê</th>
+                        <th>Ngày trả</th>
+                        <th>Khách hàng</th>
+                        <th>Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.No</td>
+                            <td class="fw-bold">@item.BookName</td>
+                            <td>@item.RentalDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.ReturnDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else if (ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-info alert-modern">Không có dữ liệu thuê trong khoảng thời gian đã chọn.</div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
