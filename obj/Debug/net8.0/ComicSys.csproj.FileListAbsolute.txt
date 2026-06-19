@@ -111,3 +111,4 @@ C:\Users\Admin\Desktop\Test_Dot_Net\obj\Debug\net8.0\ComicSys.genruntimeconfig.c
 C:\Users\Admin\Desktop\Test_Dot_Net\obj\Debug\net8.0\ref\ComicSys.dll
 C:\Users\Admin\Desktop\Test_Dot_Net\bin\Debug\net8.0\MySqlConnector.dll
 C:\Users\Admin\Desktop\Test_Dot_Net\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Admin\Desktop\Test_Dot_Net\obj\Debug\net8.0\ComicSys.sourcelink.json

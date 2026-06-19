@@ -1,16 +1,15 @@
 @model ComicBook
+
 @{
     ViewData["Title"] = "Sửa truyện";
-    ViewData["PageTitle"] = "Cập nhật truyện";
-    ViewData["PageSubtitle"] = Model.Title;
 }
 
-<partial name="_PageHeader" />
+<h1>Sửa truyện</h1>
 
-<div class="form-shell">
-    <div class="form-card">
+<div class="row">
+    <div class="col-md-6">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ComicBookID" />
             <div class="mb-3">
                 <label asp-for="Title" class="form-label"></label>
@@ -22,14 +21,14 @@
                 <input asp-for="Author" class="form-control" />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
-            <div class="mb-4">
+            <div class="mb-3">
                 <label asp-for="PricePerDay" class="form-label"></label>
                 <input asp-for="PricePerDay" class="form-control" />
                 <span asp-validation-for="PricePerDay" class="text-danger"></span>
             </div>
-            <div class="d-flex flex-wrap gap-2">
-                <input type="submit" value="Cập nhật" class="btn btn-accent" />
-                <a asp-action="Index" class="btn btn-outline-accent">Quay lại</a>
+            <div class="mb-3">
+                <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
             </div>
         </form>
     </div>

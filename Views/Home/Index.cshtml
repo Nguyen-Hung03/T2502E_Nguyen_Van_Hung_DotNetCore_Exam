@@ -1,55 +1,47 @@
-﻿@model HomeViewModel
-@{
+﻿@{
     ViewData["Title"] = "Trang chủ";
 }
 
-<section class="hero-card">
-    <h1>comicsys.com</h1>
-    <p>Hệ thống quản lý cho thuê truyện tranh — nhanh chóng, trực quan và dễ sử dụng cho cửa hàng truyện của bạn.</p>
+<section class="text-center mb-4 pb-3 border-bottom">
+    <h1 class="display-5 fw-semibold mb-2">comicsys.com</h1>
+    <p class="lead text-muted mb-0">Hệ thống quản lý cho thuê truyện tranh</p>
 </section>
 
-<div class="stat-grid">
-    <div class="stat-card accent">
-        <div class="stat-label">Truyện trong kho</div>
-        <div class="stat-value">@Model.TotalBooks</div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-4">
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Truyện tranh</h5>
+                <p class="card-text text-muted flex-grow-1">Thêm, sửa, xóa truyện trong kho.</p>
+                <a asp-controller="ComicBooks" asp-action="Index" class="btn btn-primary align-self-start">Quản lý truyện</a>
+            </div>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-label">Khách hàng</div>
-        <div class="stat-value">@Model.TotalCustomers</div>
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Khách hàng</h5>
+                <p class="card-text text-muted flex-grow-1">Đăng ký khách hàng lần đầu.</p>
+                <a asp-controller="Customers" asp-action="Register" class="btn btn-primary align-self-start">Đăng ký KH</a>
+            </div>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-label">Tổng lượt thuê</div>
-        <div class="stat-value">@Model.TotalRentals</div>
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Thuê sách</h5>
+                <p class="card-text text-muted flex-grow-1">Tạo phiếu thuê truyện cho khách.</p>
+                <a asp-controller="Rentals" asp-action="Create" class="btn btn-primary align-self-start">Tạo phiếu thuê</a>
+            </div>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-label">Đang thuê</div>
-        <div class="stat-value">@Model.ActiveRentals</div>
-    </div>
-</div>
-
-<div class="quick-grid">
-    <div class="quick-card">
-        <div class="quick-icon">📚</div>
-        <h5>Quản lý truyện</h5>
-        <p class="text-muted mb-3">Thêm, sửa, xóa truyện tranh trong kho.</p>
-        <a asp-controller="ComicBooks" asp-action="Index" class="btn btn-accent btn-sm">Xem truyện</a>
-    </div>
-    <div class="quick-card">
-        <div class="quick-icon">👤</div>
-        <h5>Khách hàng</h5>
-        <p class="text-muted mb-3">Đăng ký khách hàng mới lần đầu.</p>
-        <a asp-controller="Customers" asp-action="Register" class="btn btn-accent btn-sm">Đăng ký</a>
-    </div>
-    <div class="quick-card">
-        <div class="quick-icon">📝</div>
-        <h5>Thuê sách</h5>
-        <p class="text-muted mb-3">Tạo phiếu thuê truyện cho khách.</p>
-        <a asp-controller="Rentals" asp-action="Create" class="btn btn-accent btn-sm">Tạo phiếu thuê</a>
-    </div>
-    <div class="quick-card">
-        <div class="quick-icon">📊</div>
-        <h5>Báo cáo</h5>
-        <p class="text-muted mb-3">Xem danh sách thuê theo khoảng ngày.</p>
-        <a asp-controller="Reports" asp-action="Index" class="btn btn-accent btn-sm">Xem báo cáo</a>
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Báo cáo</h5>
+                <p class="card-text text-muted flex-grow-1">Xem danh sách thuê theo ngày.</p>
+                <a asp-controller="Reports" asp-action="Index" class="btn btn-primary align-self-start">Xem báo cáo</a>
+            </div>
+        </div>
     </div>
 </div>

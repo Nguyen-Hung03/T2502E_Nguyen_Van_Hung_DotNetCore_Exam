@@ -1,33 +1,21 @@
 using System.Diagnostics;
-using ComicSys.Data;
-using ComicSys.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using ComicSys.Models;
 
 namespace ComicSys.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly AppDbContext _context;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(AppDbContext context, ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger)
     {
-        _context = context;
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var model = new HomeViewModel
-        {
-            TotalBooks = await _context.ComicBooks.CountAsync(),
-            TotalCustomers = await _context.Customers.CountAsync(),
-            TotalRentals = await _context.Rentals.CountAsync(),
-            ActiveRentals = await _context.Rentals.CountAsync(r => r.Status == "Đang thuê")
-        };
-
-        return View(model);
+        return View();
     }
 
     public IActionResult Privacy()

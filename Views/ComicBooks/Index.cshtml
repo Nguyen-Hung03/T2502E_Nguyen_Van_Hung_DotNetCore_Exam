@@ -1,42 +1,63 @@
 @model IEnumerable<ComicBook>
+
 @{
     ViewData["Title"] = "Truyện tranh";
-    ViewData["PageTitle"] = "Danh sách truyện tranh";
-    ViewData["PageSubtitle"] = $"Quản lý {Model.Count()} cuốn truyện trong hệ thống";
-    ViewData["PageActionText"] = "+ Thêm truyện mới";
-    ViewData["PageActionController"] = "ComicBooks";
-    ViewData["PageActionAction"] = "Create";
 }
 
-<partial name="_PageHeader" />
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pb-3 border-bottom">
+    <div>
+        <h1 class="h3 mb-1">Danh sách truyện tranh</h1>
+        <p class="text-muted mb-0">@Model.Count() cuốn truyện trong hệ thống</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Thêm truyện mới</a>
+</div>
 
 @if (!Model.Any())
 {
-    <div class="panel-card empty-state">
-        <div class="empty-state-icon">📭</div>
-        <h5>Chưa có truyện nào</h5>
-        <p>Hãy thêm truyện tranh đầu tiên vào hệ thống.</p>
-        <a asp-action="Create" class="btn btn-accent mt-2">Thêm truyện</a>
+    <div class="card shadow-sm">
+        <div class="card-body text-center py-5 text-muted">
+            <p class="mb-3">Chưa có truyện nào.</p>
+            <a asp-action="Create" class="btn btn-primary">Thêm truyện đầu tiên</a>
+        </div>
     </div>
 }
 else
 {
-    <div class="comic-grid">
-        @foreach (var item in Model)
-        {
-            <article class="comic-card">
-                <div class="comic-card-cover">📖</div>
-                <div class="comic-card-body">
-                    <h5>@item.Title</h5>
-                    <p class="author">@item.Author</p>
-                    <span class="price-badge">@item.PricePerDay.ToString("N0") đ / ngày</span>
-                    <div class="comic-card-actions">
-                        <a asp-action="Edit" asp-route-id="@item.ComicBookID" class="btn btn-soft-warning btn-sm">Sửa</a>
-                        <a asp-action="Details" asp-route-id="@item.ComicBookID" class="btn btn-soft-info btn-sm">Chi tiết</a>
-                        <a asp-action="Delete" asp-route-id="@item.ComicBookID" class="btn btn-soft-danger btn-sm">Xóa</a>
-                    </div>
-                </div>
-            </article>
-        }
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 70px;">STT</th>
+                        <th>Tên truyện</th>
+                        <th>Tác giả</th>
+                        <th class="text-end" style="width: 140px;">Giá / ngày</th>
+                        <th class="text-center" style="width: 220px;">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var index = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td class="fw-semibold">@item.Title</td>
+                            <td>@item.Author</td>
+                            <td class="text-end">@item.PricePerDay.ToString("N0") đ</td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.ComicBookID" class="btn btn-outline-warning">Sửa</a>
+                                    <a asp-action="Details" asp-route-id="@item.ComicBookID" class="btn btn-outline-info">Chi tiết</a>
+                                    <a asp-action="Delete" asp-route-id="@item.ComicBookID" class="btn btn-outline-danger">Xóa</a>
+                                </div>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 }

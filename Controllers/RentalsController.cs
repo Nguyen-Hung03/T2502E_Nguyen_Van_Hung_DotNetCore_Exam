@@ -1,7 +1,6 @@
 using ComicSys.Data;
 using ComicSys.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ComicSys.Controllers;
@@ -38,14 +37,32 @@ public class RentalsController : Controller
     {
         if (model.ReturnDate < model.RentalDate)
         {
-            ModelState.AddModelError(nameof(model.ReturnDate), "Return date must be on or after rental date.");
+            ModelState.AddModelError(nameof(model.ReturnDate), "Ngày trả phải sau hoặc bằng ngày thuê.");
         }
 
-        if (ModelState.IsValid)
+        var customer = await _context.Customers
+            .FirstOrDefaultAsync(c => c.FullName.ToLower() == model.CustomerName.Trim().ToLower());
+
+        if (customer == null)
         {
+            ModelState.AddModelError(nameof(model.CustomerName), "Không tìm thấy khách hàng. Vui lòng kiểm tra lại tên.");
+        }
+
+        var comicBook = await _context.ComicBooks
+            .FirstOrDefaultAsync(c => c.Title.ToLower() == model.ComicBookTitle.Trim().ToLower());
+
+        if (comicBook == null)
+        {
+            ModelState.AddModelError(nameof(model.ComicBookTitle), "Không tìm thấy truyện. Vui lòng kiểm tra lại tên.");
+        }
+
+        if (ModelState.IsValid && customer != null && comicBook != null)
+        {
+            var pricePerDay = model.PricePerDay > 0 ? model.PricePerDay : comicBook.PricePerDay;
+
             var rental = new Rental
             {
-                CustomerID = model.CustomerID,
+                CustomerID = customer.CustomerID,
                 RentalDate = model.RentalDate,
                 ReturnDate = model.ReturnDate,
                 Status = "Đang thuê"
@@ -54,30 +71,35 @@ public class RentalsController : Controller
             _context.Rentals.Add(rental);
             await _context.SaveChangesAsync();
 
-            var detail = new RentalDetail
+            _context.RentalDetails.Add(new RentalDetail
             {
                 RentalID = rental.RentalID,
-                ComicBookID = model.ComicBookID,
+                ComicBookID = comicBook.ComicBookID,
                 Quantity = model.Quantity,
-                PricePerDay = model.PricePerDay
-            };
+                PricePerDay = pricePerDay
+            });
 
-            _context.RentalDetails.Add(detail);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Rental created successfully.";
+            TempData["SuccessMessage"] = "Tạo phiếu thuê thành công.";
             return RedirectToAction(nameof(Index));
         }
 
-        model.Customers = await GetCustomerSelectList();
-        model.ComicBooks = await GetComicBookSelectList();
+        await LoadSuggestions(model);
         return View(model);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetPricePerDay(int comicBookId)
+    public async Task<IActionResult> GetPricePerDay(string title)
     {
-        var comicBook = await _context.ComicBooks.FindAsync(comicBookId);
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            return BadRequest();
+        }
+
+        var comicBook = await _context.ComicBooks
+            .FirstOrDefaultAsync(c => c.Title.ToLower() == title.Trim().ToLower());
+
         if (comicBook == null)
         {
             return NotFound();
@@ -88,37 +110,27 @@ public class RentalsController : Controller
 
     private async Task<RentalCreateViewModel> BuildCreateViewModel()
     {
-        return new RentalCreateViewModel
+        var model = new RentalCreateViewModel
         {
             RentalDate = DateTime.Today,
             ReturnDate = DateTime.Today.AddDays(1),
-            Quantity = 1,
-            Customers = await GetCustomerSelectList(),
-            ComicBooks = await GetComicBookSelectList()
+            Quantity = 1
         };
+
+        await LoadSuggestions(model);
+        return model;
     }
 
-    private async Task<IEnumerable<SelectListItem>> GetCustomerSelectList()
+    private async Task LoadSuggestions(RentalCreateViewModel model)
     {
-        return await _context.Customers
+        model.CustomerSuggestions = await _context.Customers
             .OrderBy(c => c.FullName)
-            .Select(c => new SelectListItem
-            {
-                Value = c.CustomerID.ToString(),
-                Text = c.FullName
-            })
+            .Select(c => c.FullName)
             .ToListAsync();
-    }
 
-    private async Task<IEnumerable<SelectListItem>> GetComicBookSelectList()
-    {
-        return await _context.ComicBooks
+        model.ComicBookSuggestions = await _context.ComicBooks
             .OrderBy(c => c.Title)
-            .Select(c => new SelectListItem
-            {
-                Value = c.ComicBookID.ToString(),
-                Text = c.Title
-            })
+            .Select(c => c.Title)
             .ToListAsync();
     }
 }

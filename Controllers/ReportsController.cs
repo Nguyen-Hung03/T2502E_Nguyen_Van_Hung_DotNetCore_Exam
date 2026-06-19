@@ -25,7 +25,7 @@ public class ReportsController : Controller
     {
         if (model.EndDate < model.StartDate)
         {
-            ModelState.AddModelError(nameof(model.EndDate), "End date must be on or after start date.");
+            ModelState.AddModelError(nameof(model.EndDate), "Đến ngày phải sau hoặc bằng từ ngày.");
         }
 
         if (ModelState.IsValid)

@@ -32,7 +32,7 @@ public class CustomersController : Controller
         {
             _context.Add(customer);
             await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Customer registered successfully.";
+            TempData["SuccessMessage"] = "Đăng ký khách hàng thành công.";
             return RedirectToAction(nameof(Index));
         }
 
